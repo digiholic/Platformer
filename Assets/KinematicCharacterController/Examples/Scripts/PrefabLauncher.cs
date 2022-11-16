@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace KinematicCharacterController.Examples
 {
@@ -11,7 +12,7 @@ namespace KinematicCharacterController.Examples
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Keyboard.current.enterKey.wasPressedThisFrame)
             {
                 Rigidbody inst = Instantiate(ToLaunch, transform.position, transform.rotation);
                 inst.AddForce(transform.forward * Force, ForceMode.VelocityChange);
