@@ -15,7 +15,9 @@ public class Player : MonoBehaviour
         if (inputs == null) inputs = new PlatformerMainInput();
 
         inputs.Overworld.Move.performed   += MovePerformed;
+        inputs.Overworld.Move.canceled    += MovePerformed;
         inputs.Overworld.Camera.performed += CameraPerformed;
+        inputs.Overworld.Camera.canceled  += CameraPerformed;
         inputs.Overworld.Jump.started     += JumpPerformed;
         inputs.Overworld.Jump.canceled    += JumpPerformed;
         inputs.Overworld.Crouch.started   += CrouchPerformed;
@@ -68,14 +70,27 @@ public class Player : MonoBehaviour
     private void MovePerformed(InputAction.CallbackContext context)
     {
         inputsThisFrame.Move = context.ReadValue<Vector2>();
+        Debug.Log(inputsThisFrame.Move);
     }
 
     private void Update()
     {
-        //Send Input Package
-        inputsThisFrame = new InputPackage();
+        controller.SetInputs(inputsThisFrame);
+        ResetInputs();
+    }
+
+    private void ResetInputs()
+    {
+        inputsThisFrame.actionPressed = false;
         inputsThisFrame.actionHeld = inputs.Overworld.Action.IsPressed();
+        inputsThisFrame.actionReleased = false;
 
+        inputsThisFrame.jumpPressed = false;
+        inputsThisFrame.jumpHeld = inputs.Overworld.Jump.IsPressed();
+        inputsThisFrame.jumpReleased = false;
 
+        inputsThisFrame.jumpPressed = false;
+        inputsThisFrame.crouchHeld = inputs.Overworld.Crouch.IsPressed();
+        inputsThisFrame.jumpReleased = false;
     }
 }

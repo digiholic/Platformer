@@ -6,10 +6,16 @@ using UnityEngine;
 public class PlatformerCharacterController : MonoBehaviour, ICharacterController
 {
     [SerializeField] private KinematicCharacterMotor motor;
+    private InputPackage currentInputs;
 
     private void Start()
     {
         motor.CharacterController = this;
+    }
+
+    public void SetInputs(InputPackage inputs)
+    {
+        currentInputs = inputs;
     }
 
     public void AfterCharacterUpdate(float deltaTime)
@@ -60,7 +66,8 @@ public class PlatformerCharacterController : MonoBehaviour, ICharacterController
 
     public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
-        //throw new System.NotImplementedException();
+        Vector2 move = currentInputs.Move * 10f;
+        currentVelocity = new Vector3(move.x, currentVelocity.y, move.y);
     }
 }
 
